@@ -8,6 +8,7 @@ from dotenv import load_dotenv
 from .models.user_device import User_Device
 from .models.device_reading import Device_Reading
 import random
+import requests
 
 
 user_device_bp = Blueprint("users_devices", __name__, url_prefix="/user_devices")
@@ -117,7 +118,10 @@ def get_reading_from_last_twentyfour_hours(device_id):
 
 
 def get_real_time_device_reading():
-    return ""
+    raspberryplant_api_url = "RASPBERRY_READING_URL"
+    response = requests.get(raspberryplant_api_url)
+    real_time_reading = response.json()
+    return real_time_reading
 
 
 def get_last_reading_stored(device_id):

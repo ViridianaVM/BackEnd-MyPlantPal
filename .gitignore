@@ -1,6 +1,10 @@
 .vscode
 .DS_Store
 
+#Igoner Personal keys
+Key/
+MyPlantPalWebServer_key.pem
+
 #Ignore migrations forlder
 
 # Byte-compiled / optimized / DLL files
