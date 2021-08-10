@@ -1,0 +1,16 @@
+#This file should be created under /etc/systemd/system path
+[Unit]
+Description=Flask Run
+After=network.target
+
+[Service]
+Type=idle
+WorkingDirectory=/var/www/myplantpal/
+Environment=FLASK_APP=app
+Environment=FLASK_ENV=development
+Environment=SQLALCHEMY_DATABASE_URI=value that is in my .env file
+ExecStart=bash /usr/bin/MyScripts/FlaskStart.sh
+Restart=always
+
+[Install]
+WantedBy=multi-user.target

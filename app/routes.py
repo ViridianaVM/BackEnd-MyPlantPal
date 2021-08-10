@@ -130,17 +130,17 @@ def get_last_reading_stored(device_id):
 
 
 def check_status(response):
-    if int(response["moisture_sensor"]) < 30:
-        return make_response({"Status": "Your plant needs more water and love"}, 200)
-    elif int(response["moisture_sensor"]) > 50:
+    if int(response["moisture_sensor"]) < 1500:
         return make_response({"Status": "No more water for your plant. You will drown it."}, 200)
-    elif int(response["temperature_sensor"]) < 65:
+    elif int(response["moisture_sensor"]) > 1900:
+        return make_response({"Status": "Your plant needs more water and love"}, 200)
+    elif int(response["temperature_sensor"]) < 18:
         return make_response({"Status": "Your plant needs to feel cozy. Move it to a warmer place"}, 200)
-    elif int(response["temperature_sensor"]) > 80:
+    elif int(response["temperature_sensor"]) > 28:
         return make_response({"Status": "With this high temperature, it will not grow. Move it to a cooler place"}, 200)
     elif int(response["light_sensor"]) < 100:
         return make_response({"Status": "This beauty needs more light"}, 200)
-    elif int(response["light_sensor"]) > 250:
+    elif int(response["light_sensor"]) > 290:
         return make_response({"Status": "Too much light! Some shade would be great"}, 200)
     else:
         return make_response(ok_status_responses(), 200)
