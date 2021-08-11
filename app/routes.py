@@ -98,7 +98,7 @@ def get_status_of_my_plant(device_id):
         #TODO: Call the raspberry pi to access real time data
         real_time_reading = get_real_time_device_reading()
         if real_time_reading:
-            return check_status(jsonify(real_time_reading))
+            return check_status(real_time_reading)
         else:
             # If the device cannot be reached, then get the last record from the database
             last_reading_stored =  get_last_reading_stored(device_id)
