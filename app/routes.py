@@ -89,6 +89,15 @@ def get_all_device_readings(device_id):
         return make_response({"error": "incorrect device_id or no readings for this device"}, 400)
 
 
+@device_reading_bp.route("/<string:device_id>/last", methods=["GET"])
+def get_last_device_reading(device_id):
+    last_device_reading = Device_Reading.query.filter_by(device_id=device_id).order_by(desc(Device_Reading.reading_time)).limit(1).first()
+    if last_device_reading:
+        return make_response(last_device_reading.to_json(), 200)
+    else:
+        return make_response({"error": "incorrect device_id or no readings for this device"}, 400)
+
+
 @device_reading_bp.route("/<string:device_id>", methods=["GET"])
 def get_status_of_my_plant(device_id):
     last_device_reading = get_reading_from_last_twentyfour_hours(device_id)
