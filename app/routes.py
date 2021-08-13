@@ -1,7 +1,7 @@
 
 from datetime import datetime
 from datetime import timedelta
-from sqlalchemy import desc
+from sqlalchemy import desc, text
 from flask import Blueprint, request, jsonify, make_response
 from app import db
 from dotenv import load_dotenv
@@ -96,6 +96,28 @@ def get_last_device_reading(device_id):
         return make_response(last_device_reading.to_json(), 200)
     else:
         return make_response({"error": "incorrect device_id or no readings for this device"}, 400)
+
+
+@device_reading_bp.route("/<string:device_id>/plots", methods=["GET"])
+def get_device_readings_to_plot(device_id):
+    #Execute raw SQL query
+    sql = text("SELECT AVG(moisture_sensor), AVG(temperature_sensor), AVG(light_sensor), DATE_FORMAT(reading_time,'%M %d %Y') as 'simple_reading_time' FROM myplantpaldb.device_readings GROUP BY simple_reading_time")
+    device_reading_list = db.engine.execute(sql)
+    device_reading_list_objects = [device_reading for device_reading in device_reading_list]
+    device_reading_list_in_json = []
+    for reading in device_reading_list_objects:
+        reading_data = {
+            "moisture_sensor": float(reading[0]),
+            "temperature_sensor": float(reading[1]),
+            "light_sensor": float(reading[2]),
+            "reading_time": str(reading[3])
+        }
+        device_reading_list_in_json.append(reading_data)
+    if device_reading_list_in_json:
+        return jsonify(device_reading_list_in_json), 200
+    else:
+        return make_response({"error": "incorrect device_id or no readings for this device"}, 400)
+
 
 
 @device_reading_bp.route("/<string:device_id>", methods=["GET"])

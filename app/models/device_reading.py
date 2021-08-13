@@ -21,3 +21,12 @@ class Device_Reading(db.Model):
             "reading_time": self.reading_time,
             "received_time": self.received_time 
         }
+    
+    #Usefult to give a cleaner format to dates
+    def to_graph_json(self):
+        return{
+            "moisture_sensor": self.moisture_sensor,
+            "temperature_sensor": self.temperature_sensor,
+            "light_sensor": self.light_sensor,
+            "reading_time": self.reading_time.strftime('%d/%m/%y')
+        }
